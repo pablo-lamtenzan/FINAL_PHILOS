@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/04 22:26:11 by pablo             #+#    #+#             */
-/*   Updated: 2020/12/17 02:54:15 by pablo            ###   ########lyon.fr   */
+/*   Updated: 2020/12/17 20:18:13 by pablo            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ bool				msg(t_philo *const p, uint8_t code)
 	if (sem_wait(p->shared->output) || sem_wait(p->shared->nobody_dead))
 		return (false);
 	print_time(p);
-	if (code & (MSG_DIE | MSG_OVEREAT) && write(2, "HIIII\n", 7) && sem_post(p->shared->nobody_dead))
+	if (!(code & (MSG_DIE | MSG_OVEREAT)) && sem_post(p->shared->nobody_dead))
 		return (false);
 	if (!(code & MSG_OVEREAT))
 		ft_putnbr_fd((uint64_t)(p->index + 1), STDOUT_FILENO);
