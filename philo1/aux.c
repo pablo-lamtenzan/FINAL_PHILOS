@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/04 15:55:57 by pablo             #+#    #+#             */
-/*   Updated: 2020/12/16 23:18:11 by pablo            ###   ########lyon.fr   */
+/*   Updated: 2020/12/18 01:38:37 by pablo            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ uint64_t					get_time(void)
 	static struct timeval	tv;
 	
 	gettimeofday(&tv, NULL);
-	return (tv.tv_sec * (time_t)1000 + (tv.tv_usec / (suseconds_t)1000));
+	return ((uint64_t)(tv.tv_sec * (time_t)1000 + (tv.tv_usec / (suseconds_t)1000)));
 }
 
 void						ft_putnbr_fd(uint64_t n, int fd)

@@ -1,7 +1,7 @@
 NAME		= philo_one
 
 CC			= gcc
-CFLAGS		= -Wall -Wextra -Werror -I. -g3 -fsanitize=address
+CFLAGS		= -Wall -Wextra -Werror -I. #-g3 -fsanitize=address
 LIBS		= -lpthread
 
 SRCS		= main.c actions.c aux.c engine.c engine_helper.c destroy_mutexes.c msg.c parse.c

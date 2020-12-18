@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/04 16:35:20 by pablo             #+#    #+#             */
-/*   Updated: 2020/12/16 22:55:54 by pablo            ###   ########lyon.fr   */
+/*   Updated: 2020/12/18 01:16:29 by pablo            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,19 +20,21 @@ bool			destroy_mutexes(t_shared *const sh)
 
 	if (sh->philosophers)
 	{
-		i = 0;
-		while (i < sh->nb)
+		i = -1;
+		while (++i < sh->nb)
 		{
+			pthread_mutex_lock(&sh->philosophers[i].mutex);
+			pthread_mutex_unlock(&sh->philosophers[i].mutex);
 			pthread_mutex_destroy(&sh->philosophers[i].mutex);
-			pthread_mutex_destroy(&sh->philosophers[i++].eating_done);
+			pthread_mutex_destroy(&sh->philosophers[i].eating_done);
 		}
 		free(sh->philosophers);
 	}
 	if (sh->forks)
 	{
-		i = 0;
-		while (i < sh->nb)
-			pthread_mutex_destroy(&sh->forks[i++]);
+		i = -1;
+		while (++i < sh->nb)
+			pthread_mutex_destroy(&sh->forks[i]);
 		free(sh->forks);
 	}
 	pthread_mutex_destroy(&sh->output);

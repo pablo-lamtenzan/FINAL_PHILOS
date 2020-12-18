@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/04 12:21:06 by pablo             #+#    #+#             */
-/*   Updated: 2020/12/17 00:36:42 by pablo            ###   ########lyon.fr   */
+/*   Updated: 2020/12/18 01:25:41 by pablo            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,15 @@ static void		*overeat_persistent_checker(void *arg)
 	while (++i < sh->max_meals && !(y = 0))
 	{
 		while (y < sh->nb)
+		{
+			if (sh->exited == true)
+				return (arg);
 			pthread_mutex_lock(&sh->philosophers[y++].eating_done);
+		}
 	}
+	if (sh->exited == true)
+		return (arg);
+	sh->exited = true;
 	msg(&sh->philosophers[0], MSG_OVEREAT);
 	pthread_mutex_unlock(&sh->end);
 	return (arg);
@@ -52,16 +59,20 @@ static void		*overeat_persistent_checker(void *arg)
 static void		*starved_persistent_checker(void *arg)
 {
 	t_philo *const	p = (t_philo*const)arg;
+	t_shared *const	sh = p->shared;
 	bool			died;
 
 	died = false;
 	while (died == false)
 	{
 		pthread_mutex_lock(&p->mutex);
+		if (sh->exited == true)
+			return ((void*)(int64_t)pthread_mutex_unlock(&p->mutex));
 		died = philo_is_starved(p);
 		pthread_mutex_unlock(&p->mutex);
 		died == false ? usleep(1000) : 0;
 	}
+	sh->exited = true;
 	msg(p, MSG_DIE);
 	pthread_mutex_unlock(&p->shared->end);
 	return (arg);

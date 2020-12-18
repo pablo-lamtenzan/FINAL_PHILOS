@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/04 16:11:35 by pablo             #+#    #+#             */
-/*   Updated: 2020/12/17 00:26:03 by pablo            ###   ########lyon.fr   */
+/*   Updated: 2020/12/18 01:50:38 by pablo            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@ static bool			init_all(t_shared *const sh)
 {
 	uint32_t		i;
 
-	if (!(sh->forks = malloc(sizeof(pthread_mutex_t) * sh->nb)))
-		return (false);
 	i = 0;
 	while (i < sh->nb)
 	{
@@ -27,12 +25,12 @@ static bool			init_all(t_shared *const sh)
 		sh->philosophers[i].right_fork = (i + 1u) % sh->nb;
 		sh->philosophers[i].is_eating = false;
 		sh->philosophers[i].shared = sh;
-		if (pthread_mutex_init(&sh->philosophers[i].mutex, NULL)
+		if (pthread_mutex_init(&sh->philosophers[i].mutex, NULL) \
 				|| pthread_mutex_init(&sh->philosophers[i].eating_done, NULL))
 			return (false);
 		pthread_mutex_lock(&sh->philosophers[i++].eating_done);
 	}
-	if (!(i = 0) && (pthread_mutex_init(&sh->output, NULL)
+	if (!(i = 0) && (pthread_mutex_init(&sh->output, NULL) \
 			|| pthread_mutex_init(&sh->end, NULL)))
 		return (false);
 	pthread_mutex_lock(&sh->end);
@@ -60,12 +58,14 @@ bool				parse(t_shared *const sh, int ac, const char **av)
 {
 	sh->philosophers = NULL;
 	sh->forks = NULL;
-	if (((sh->nb = u32_atoi(av, 1ul)) > MAX_PHILO_NB || sh->nb < MIN_PHILO_NB)
-	|| (sh->time_to_die = u64_atoi(av, 2ul)) < ARGS_LIMIT
-	|| (sh->time_to_eat = u64_atoi(av, 3ul)) < ARGS_LIMIT
-	|| (sh->time_to_sleep = u64_atoi(av, 4ul)) < ARGS_LIMIT
-	|| (sh->max_meals = ac == 6 ? ft_atoi(av[5]) : 0) < 0
-	|| !(sh->philosophers = malloc(sizeof(t_philo) * sh->nb)))
+	sh->exited = false;
+	if (((sh->nb = u32_atoi(av, 1ul)) > MAX_PHILO_NB || sh->nb < MIN_PHILO_NB) \
+			|| (sh->time_to_die = u64_atoi(av, 2ul)) < ARGS_LIMIT \
+			|| (sh->time_to_eat = u64_atoi(av, 3ul)) < ARGS_LIMIT \
+			|| (sh->time_to_sleep = u64_atoi(av, 4ul)) < ARGS_LIMIT \
+			|| (sh->max_meals = ac == 6 ? ft_atoi(av[5]) : 0) < 0 \
+			|| !(sh->philosophers = malloc(sizeof(t_philo) * sh->nb)) \
+			|| !(sh->forks = malloc(sizeof(pthread_mutex_t) * sh->nb)))
 		return (false);
 	sh->max_meals = sh->max_meals == 0 ? -1 : sh->max_meals;
 	return (init_all(sh));

@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/03 22:21:42 by pablo             #+#    #+#             */
-/*   Updated: 2020/12/16 23:42:49 by pablo            ###   ########lyon.fr   */
+/*   Updated: 2020/12/18 02:00:30 by pablo            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,32 +31,6 @@
 # define ARGS_LIMIT		100ul
 
 /*
-** Parallel processing programs must protect shared resources to avoid
-** data corruption. This can be achive using mutexes (mutual exclusion)
-** on the shared resources and actions.
-**
-** The ressources or actions shared by the philophers are:
-** 1) Forks: taking or droping them
-** 2) Output: outputing the status of a philosopher when does an action
-**
-** The ressources shared to count the total meals are:
-** 1) The philosophers
-** 2) The meal (if the meal was done)
-**
-** The shared ressources to end the program are:
-** 1) The dead status of any philosopher (but only 1)
-**
-** How the engine works?
-** - A thread will count the number of meals of each philosopher
-**		and end the program if necesary
-** - Each philosopher will be a thread, each thread will execute a routine
-**		this routine will be take forks, then if has enought forks eat and
-**		finally drop the forks and sleep. Each philosopher thread will have
-**		a support thread who will check if the philosipher is to hungry to
-**		be alive and if necesarry end the execution.
-*/
-
-/*
 ** This is the structure for each philosopher
 **
 ** index				-> philosophers index
@@ -68,7 +42,7 @@
 ** times_eaten			-> time the philosopher has eat // not used
 ** shared				-> shared ressources
 ** mutex				-> philosopher own mutex
-** eating_done			-> blocks/unblocks the gobal max eating count
+** eating_done			-> asyncronous meal count
 */
 
 typedef struct	s_philo
@@ -110,6 +84,7 @@ typedef struct	s_shared
 	pthread_mutex_t		*forks;
 	pthread_mutex_t		output;
 	pthread_mutex_t		end;
+	bool				exited;
 	t_philo				*philosophers;
 }				t_shared;
 
