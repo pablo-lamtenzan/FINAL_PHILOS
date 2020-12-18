@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/12 22:41:58 by plamtenz          #+#    #+#             */
-/*   Updated: 2020/12/17 01:54:52 by pablo            ###   ########lyon.fr   */
+/*   Updated: 2020/12/18 02:56:31 by pablo            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,16 @@ static void		*overeat_persistent_checker(void *arg)
 	while (++i < sh->max_meals && !(y = 0))
 	{
 		while (y < sh->nb)
+		{
+			if (sh->exited == true)
+				return (arg);
 			if (sem_wait(sh->philosophers[y++].eating_done))
 				return (NULL);
+		}
 	}
+	if (sh->exited == true)
+			return (arg);
+	sh->exited = true;
 	if (!msg(&sh->philosophers[0], MSG_OVEREAT) || sem_post(sh->end))
 		return (NULL);
 	return (arg);
@@ -35,18 +42,22 @@ static void		*overeat_persistent_checker(void *arg)
 static void		*starved_persistent_checker(void *arg)
 {
 	t_philo *const	p = (t_philo*const)arg;
+	t_shared *const	sh = p->shared;
 	bool			died;
 
 	died = false;
 	while (died == false)
 	{
-		if (sem_wait(p->mutex))
+		if (sh->exited == false && sem_wait(p->mutex))
 			return (NULL);
+		if (sh->exited == true)
+			return ((void*)(int64_t)sem_post(p->mutex));
 		died = philo_is_starved(p);
-		if (sem_post(p->mutex))
+		if (sh->exited == false && sem_post(p->mutex))
 			return (NULL);
 		died == false ? usleep(1000) : 0;
 	}
+	sh->exited = true;
 	if (!msg(p, MSG_DIE) || sem_post(p->shared->end))
 		return (NULL);
 	return (arg);

@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/04 21:11:52 by pablo             #+#    #+#             */
-/*   Updated: 2020/12/17 02:09:45 by pablo            ###   ########lyon.fr   */
+/*   Updated: 2020/12/18 03:23:51 by pablo            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 # define SEM_DEAD		"Dead"
 # define SEM_PHILO		"Philo"
 # define SEM_EAT		"Eat"
-# define SEM_NBD_DEATH	"NobodyIsDeath"
+# define ALL_ARE_ALIVE	"All_are_alive"
 
 # define MSG_EATING		1
 # define MSG_SPLEEPING	2
@@ -65,6 +65,7 @@ typedef struct	s_shared
 	sem_t				*output;
 	sem_t				*end;
 	sem_t				*nobody_dead;
+	bool				exited;
 	t_philo				*philosophers;
 }				t_shared;
 

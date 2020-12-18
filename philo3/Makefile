@@ -1,7 +1,7 @@
 NAME		= philo_three
 
 CC			= gcc
-CFLAGS		= -Wall -Wextra -Werror -I. #-g3 -fsanitize=address
+CFLAGS		= -Wall -Wextra -Werror -I.
 LIBS		= -lpthread
 
 SRCS		= main.c actions.c aux.c engine.c engine_helper.c destroy_semaphores.c msg.c parse.c

@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/04 22:37:55 by pablo             #+#    #+#             */
-/*   Updated: 2020/12/17 02:51:10 by pablo            ###   ########lyon.fr   */
+/*   Updated: 2020/12/18 03:23:36 by pablo            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,10 @@ char				*sem_name(const char *name, int index)
 	return (dest);
 }
 
-static sem_t		*new_sem(char *name, size_t nb, bool freed)
+static sem_t		*new_sem(char *name, size_t nb)
 {
 	sem_unlink(name);
 	return (sem_open(name, O_CREAT | O_EXCL, 420, nb));
-	if (freed)
-		free(name);
 }
 
 static bool			init_all(t_shared *const sh)
@@ -53,16 +51,18 @@ static bool			init_all(t_shared *const sh)
 		sh->philosophers[i].is_eating = false;
 		sh->philosophers[i].shared = sh;
 		if (!(sh->philosophers[i].mutex = \
-				new_sem(name = sem_name(SEM_PHILO, i), 1, true)))
+				new_sem(name = sem_name(SEM_PHILO, i), 1)))
 			return (false);
+		free(name);
 		if (!(sh->philosophers[i].eating_done = \
-				new_sem(name = sem_name(SEM_EAT, i), 0, true)))
+				new_sem(name = sem_name(SEM_EAT, i), 0)))
 			return (false);
+		free(name);
 	}
-	if (!(sh->forks = new_sem(SEM_FORK, sh->nb, false)) \
-			|| !(sh->output = new_sem(SEM_OUTPUT, 1, false)) \
-			|| !(sh->end = new_sem(SEM_DEAD, 0, false)) \
-			|| !(sh->nobody_dead = new_sem(SEM_NBD_DEATH, 1, false)))
+	if (!(sh->forks = new_sem(SEM_FORK, sh->nb)) \
+			|| !(sh->output = new_sem(SEM_OUTPUT, 1)) \
+			|| !(sh->end = new_sem(SEM_DEAD, 0)) \
+			|| !(sh->nobody_dead = new_sem(ALL_ARE_ALIVE, 1)))
 		return (false);
 	return (true);
 }
@@ -78,12 +78,13 @@ bool				parse(t_shared *const sh, int ac, const char **av)
 {
 	sh->philosophers = NULL;
 	sh->forks = NULL;
-	if (((sh->nb = u32_atoi(av, 1ul)) > MAX_PHILO_NB || sh->nb < MIN_PHILO_NB)
-	|| (sh->time_to_die = u64_atoi(av, 2ul)) < ARGS_LIMIT
-	|| (sh->time_to_eat = u64_atoi(av, 3ul)) < ARGS_LIMIT
-	|| (sh->time_to_sleep = u64_atoi(av, 4ul)) < ARGS_LIMIT
-	|| (sh->max_meals = ac == 6 ? ft_atoi(av[5]) : 0) < 0
-	|| !(sh->philosophers = malloc(sizeof(t_philo) * sh->nb)))
+	sh->exited = false;
+	if (((sh->nb = u32_atoi(av, 1ul)) > MAX_PHILO_NB || sh->nb < MIN_PHILO_NB) \
+			|| (sh->time_to_die = u64_atoi(av, 2ul)) < ARGS_LIMIT \
+			|| (sh->time_to_eat = u64_atoi(av, 3ul)) < ARGS_LIMIT \
+			|| (sh->time_to_sleep = u64_atoi(av, 4ul)) < ARGS_LIMIT \
+			|| (sh->max_meals = ac == 6 ? ft_atoi(av[5]) : 0) < 0 \
+			|| !(sh->philosophers = malloc(sizeof(t_philo) * sh->nb)))
 		return (false);
 	sh->max_meals = sh->max_meals == 0 ? -1 : sh->max_meals;
 	return (init_all(sh));
