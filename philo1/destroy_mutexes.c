@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/04 16:35:20 by pablo             #+#    #+#             */
-/*   Updated: 2020/12/18 01:16:29 by pablo            ###   ########lyon.fr   */
+/*   Updated: 2020/12/19 20:05:51 by pablo            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ bool			destroy_mutexes(t_shared *const sh)
 			pthread_mutex_destroy(&sh->forks[i]);
 		free(sh->forks);
 	}
+	// Litle issue here: Not init in some cases (does not crash but is bad)
 	pthread_mutex_destroy(&sh->output);
 	pthread_mutex_destroy(&sh->end);
 	return (true);

@@ -6,11 +6,11 @@
 /*   By: pablo <pablo@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/04 22:26:11 by pablo             #+#    #+#             */
-/*   Updated: 2020/12/17 20:18:13 by pablo            ###   ########lyon.fr   */
+/*   Updated: 2020/12/18 18:51:25 by pablo            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "philo3.h"
+#include "philo3.h"
 
 static const char	*output(uint8_t code)
 {

@@ -6,11 +6,11 @@
 /*   By: pablo <pablo@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/04 22:30:06 by pablo             #+#    #+#             */
-/*   Updated: 2020/12/18 03:22:06 by pablo            ###   ########lyon.fr   */
+/*   Updated: 2020/12/18 18:48:26 by pablo            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "philo3.h"
+#include "philo3.h"
 
 bool			destroy_semaphores(t_shared *const sh)
 {

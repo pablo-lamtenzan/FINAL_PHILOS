@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/12 21:42:18 by plamtenz          #+#    #+#             */
-/*   Updated: 2020/12/18 02:43:30 by pablo            ###   ########lyon.fr   */
+/*   Updated: 2020/12/19 20:04:07 by pablo            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,17 @@ static bool			init_all(t_shared *const sh)
 		sh->philosophers[i].shared = sh;
 		if (!(sh->philosophers[i].mutex = \
 				new_sem(name = sem_name(SEM_PHILO, i), 1)))
+		{
+			free(name);
 			return (false);
+		}
 		free(name);
 		if (!(sh->philosophers[i].eating_done = \
 				new_sem(name = sem_name(SEM_EAT, i), 0)))
+		{
+			free(name);
 			return (false);
+		}
 		free(name);
 	}
 	if (!(sh->forks = new_sem(SEM_FORK, sh->nb)) \

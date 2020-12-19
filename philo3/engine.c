@@ -6,11 +6,11 @@
 /*   By: pablo <pablo@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/04 21:36:01 by pablo             #+#    #+#             */
-/*   Updated: 2020/12/18 03:07:24 by pablo            ###   ########lyon.fr   */
+/*   Updated: 2020/12/18 18:50:19 by pablo            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "philo3.h"
+#include "philo3.h"
 
 static void		*overeat_persistent_checker(void *arg)
 {
@@ -32,7 +32,7 @@ static void		*overeat_persistent_checker(void *arg)
 		}
 	}
 	if (sh->exited == true)
-			return (arg);
+		return (arg);
 	sh->exited = true;
 	if (!msg(&sh->philosophers[0], MSG_OVEREAT) || sem_post(sh->end))
 		return (NULL);

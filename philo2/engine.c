@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/12 22:41:58 by plamtenz          #+#    #+#             */
-/*   Updated: 2020/12/18 02:56:31 by pablo            ###   ########lyon.fr   */
+/*   Updated: 2020/12/18 18:56:59 by pablo            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static void		*overeat_persistent_checker(void *arg)
 		}
 	}
 	if (sh->exited == true)
-			return (arg);
+		return (arg);
 	sh->exited = true;
 	if (!msg(&sh->philosophers[0], MSG_OVEREAT) || sem_post(sh->end))
 		return (NULL);

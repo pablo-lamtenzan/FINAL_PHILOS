@@ -6,13 +6,14 @@
 /*   By: pablo <pablo@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/04 22:47:28 by pablo             #+#    #+#             */
-/*   Updated: 2020/12/17 02:34:28 by pablo            ###   ########lyon.fr   */
+/*   Updated: 2020/12/18 18:51:08 by pablo            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "philo3.h"
-# include <sys/wait.h>
-# include <signal.h>
+#include "philo3.h"
+
+#include <sys/wait.h>
+#include <signal.h>
 
 void			zombies_killer(t_shared sh)
 {
@@ -30,9 +31,9 @@ void			zombies_killer(t_shared sh)
 	}
 }
 
-uint64_t				u64_atoi(const char **av, size_t index)
+uint64_t		u64_atoi(const char **av, size_t index)
 {
-	const int			tmp = ft_atoi(av[index]);
+	const int	tmp = ft_atoi(av[index]);
 
 	return (tmp < 0 ? 0 : (uint64_t)tmp);
 }

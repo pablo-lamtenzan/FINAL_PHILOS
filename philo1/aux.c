@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/04 15:55:57 by pablo             #+#    #+#             */
-/*   Updated: 2020/12/18 01:38:37 by pablo            ###   ########lyon.fr   */
+/*   Updated: 2020/12/18 19:02:01 by pablo            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,13 @@ int							ft_atoi(const char *str)
 	return (sing < 0 ? 0 : -1);
 }
 
-
 uint64_t					get_time(void)
 {
 	static struct timeval	tv;
-	
+
 	gettimeofday(&tv, NULL);
-	return ((uint64_t)(tv.tv_sec * (time_t)1000 + (tv.tv_usec / (suseconds_t)1000)));
+	return ((time_t)tv.tv_sec * (time_t)1000 + \
+		((suseconds_t)tv.tv_usec / (suseconds_t)1000));
 }
 
 void						ft_putnbr_fd(uint64_t n, int fd)

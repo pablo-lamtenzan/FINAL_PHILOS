@@ -6,11 +6,11 @@
 /*   By: pablo <pablo@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/04 22:11:21 by pablo             #+#    #+#             */
-/*   Updated: 2020/12/17 02:18:57 by pablo            ###   ########lyon.fr   */
+/*   Updated: 2020/12/18 18:48:41 by pablo            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "philo3.h"
+#include "philo3.h"
 
 bool			ph_take_forks(t_philo *const p)
 {
